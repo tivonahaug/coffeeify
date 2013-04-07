@@ -4,7 +4,7 @@ var vm = require('vm');
 
 test('bundle transform', function (t) {
     t.plan(1);
-    
+
     var b = browserify();
     b.add(__dirname + '/../example/foo.coffee');
     b.transform(__dirname + '/..');
@@ -14,7 +14,25 @@ test('bundle transform', function (t) {
             console: { log: log }
         });
     });
-    
+
+    function log (msg) {
+        t.equal(msg, 555);
+    }
+});
+
+test('literate cofeescript bundle transform', function (t) {
+    t.plan(1);
+
+    var b = browserify();
+    b.add(__dirname + '/../example/foo.litcoffee');
+    b.transform(__dirname + '/..');
+    b.bundle(function (err, src) {
+        if (err) t.fail(err);
+        vm.runInNewContext(src, {
+            console: { log: log }
+        });
+    });
+
     function log (msg) {
         t.equal(msg, 555);
     }
