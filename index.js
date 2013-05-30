@@ -32,6 +32,8 @@ module.exports = function (file) {
         try {
             src = compile(file, data);
         } catch (error) {
+            error.file = file;
+            error.body = data;
             this.emit('error', error);
         }
         this.queue(src);
