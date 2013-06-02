@@ -46,6 +46,7 @@ function compile(file, data, callback) {
             sourceMap: true,
             generatedFile: file,
             inline: true,
+            bare: true,
             literate: isLiterate(file)
         });
     } catch (e) {
