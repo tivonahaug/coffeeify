@@ -6,7 +6,7 @@ mix and match `.coffee` and `.js` files in the same project
 
 **important: when using require('path/to/file.coffee') remember to use .coffee extension - soon to be fixed, [the browserify devs have relented](https://github.com/shtylman/node-browser-resolve/issues/20#issuecomment-18303661)! go [+1 this pr](https://github.com/shtylman/node-browser-resolve/pull/12) until it gets merged :-)**
 
-[![build status](https://secure.travis-ci.org/jnordberg/coffeeify.png)](http://travis-ci.org/jnordberg/coffeeify)
+[![Build Status](https://travis-ci.org/jnordberg/coffeeify.png?branch=master)](https://travis-ci.org/jnordberg/coffeeify)
 
 # example
 
