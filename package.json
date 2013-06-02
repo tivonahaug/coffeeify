@@ -17,9 +17,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/substack/coffeeify.git"
+        "url": "git://github.com/jnordberg/coffeeify.git"
     },
-    "homepage": "https://github.com/substack/coffeeify",
+    "homepage": "https://github.com/jnordberg/coffeeify",
     "keywords": [
         "coffee-script",
         "browserify",
@@ -28,10 +28,17 @@
         "plugin",
         "transform"
     ],
-    "author": {
-        "name": "James Halliday",
-        "email": "mail@substack.net",
-        "url": "http://substack.net"
-    },
+    "contributors": [
+        {
+            "name": "James Halliday",
+            "email": "mail@substack.net",
+            "url": "http://substack.net"
+        },
+        {
+            "name": "Johan Nordberg",
+            "email": "code@johan-nordberg.com",
+            "url": "http://johan-nordberg.com"
+        }
+    ],
     "license": "MIT"
 }
