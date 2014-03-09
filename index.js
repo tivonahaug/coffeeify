@@ -64,7 +64,7 @@ function compile(file, data, callback) {
     var map = convert.fromJSON(compiled.v3SourceMap);
     map.setProperty('sources', [file]);
 
-    callback(null, compiled.js + '\n' + map.toComment());
+    callback(null, compiled.js + '\n' + map.toComment() + '\n');
 }
 
 function coffeeify(file) {
