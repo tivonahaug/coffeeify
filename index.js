@@ -45,27 +45,27 @@ ParseError.prototype.inspect = function () {
     return this.annotated;
 };
 
-function compile(file, data, callback) {
+function compile(filename, source, options, callback) {
     var compiled;
     try {
-        compiled = coffee.compile(data, {
-            sourceMap: coffeeify.sourceMap,
+        compiled = coffee.compile(source, {
+            sourceMap: options.sourceMap,
             inline: true,
-            bare: true,
-            literate: isLiterate(file)
+            bare: options.bare,
+            literate: isLiterate(filename)
         });
     } catch (e) {
         var error = e;
         if (e.location) {
-            error = new ParseError(e, data, file);
+            error = new ParseError(e, source, filename);
         }
         callback(error);
         return;
     }
 
-    if (coffeeify.sourceMap) {
+    if (options.sourceMap) {
         var map = convert.fromJSON(compiled.v3SourceMap);
-        var basename = path.basename(file);
+        var basename = path.basename(filename);
         map.setProperty('file', basename.replace(filePattern, '.js'));
         map.setProperty('sources', [basename]);
         callback(null, compiled.js + '\n' + map.toComment() + '\n');
@@ -75,29 +75,41 @@ function compile(file, data, callback) {
 
 }
 
-function coffeeify(file) {
-    if (!isCoffee(file)) return through();
+function coffeeify(filename, options) {
+    if (!isCoffee(filename)) return through();
 
-    var data = '', stream = through(write, end);
+    if (typeof options === 'undefined' || options === null) options = {};
 
-    return stream;
+    var compileOptions = {
+        sourceMap: (options._flags && options._flags.debug),
+        bare: true
+    };
 
-    function write(buf) {
-        data += buf;
+    for (var i = 0, keys = Object.keys(compileOptions); i < keys.length; i++) {
+        var key = keys[i], option = options[key];
+        if (typeof option !== 'undefined' && option !== null) compileOptions[key] = !!option;
+    }
+
+    var chunks = [];
+    function write(chunk) {
+        chunks.push(chunk);
     }
 
     function end() {
-        compile(file, data, function(error, result) {
+        var stream = this;
+        var source = Buffer.concat(chunks).toString();
+        compile(filename, source, compileOptions, function(error, result) {
             if (error) stream.emit('error', error);
             stream.queue(result);
             stream.queue(null);
         });
     }
+
+    return through(write, end);
 }
 
 coffeeify.compile = compile;
 coffeeify.isCoffee = isCoffee;
 coffeeify.isLiterate = isLiterate;
-coffeeify.sourceMap = true; // use source maps by default
 
 module.exports = coffeeify;
