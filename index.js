@@ -1,9 +1,12 @@
 ﻿var coffee = require('coffee-script');
-var through = require('through');
 var convert = require('convert-source-map');
+var path = require('path');
+var through = require('through');
+
+var filePattern = /\.((lit)?coffee|coffee\.md)$/;
 
 function isCoffee (file) {
-    return (/\.((lit)?coffee|coffee\.md)$/).test(file);
+    return filePattern.test(file);
 }
 
 function isLiterate (file) {
@@ -47,7 +50,6 @@ function compile(file, data, callback) {
     try {
         compiled = coffee.compile(data, {
             sourceMap: coffeeify.sourceMap,
-            generatedFile: file,
             inline: true,
             bare: true,
             literate: isLiterate(file)
@@ -63,12 +65,14 @@ function compile(file, data, callback) {
 
     if (coffeeify.sourceMap) {
         var map = convert.fromJSON(compiled.v3SourceMap);
-        map.setProperty('sources', [file]);
+        var basename = path.basename(file);
+        map.setProperty('file', basename.replace(filePattern, '.js'));
+        map.setProperty('sources', [basename]);
         callback(null, compiled.js + '\n' + map.toComment() + '\n');
     } else {
         callback(null, compiled + '\n');
     }
-    
+
 }
 
 function coffeeify(file) {
