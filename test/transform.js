@@ -8,7 +8,7 @@ var transform =  require('..');
 test('transform adds sourcemap comment when sourceMap is true', function (t) {
     t.plan(1);
     var data = '';
-    
+
     transform.sourceMap = true;
 
     var file = path.join(__dirname, '../example/foo.coffee');
@@ -27,7 +27,7 @@ test('transform adds sourcemap comment when sourceMap is true', function (t) {
               sourceRoot: '',
               sources: [ file ],
               names: [],
-              mappings: 'AAAA,OAAO,CAAC,GAAR,CAAY,OAAA,CAAQ,UAAR,CAAZ,CAAA,CAAA',
+              mappings: 'AAAA,OAAO,CAAC,GAAR,CAAY,OAAA,CAAQ,UAAR,CAAZ',
               sourcesContent: [ 'console.log(require \'./bar.js\')\n' ] },
             'adds sourcemap comment including original source'
       );
