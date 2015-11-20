@@ -52,6 +52,7 @@ function compile(filename, source, options, callback) {
             sourceMap: options.sourceMap,
             inline: true,
             bare: options.bare,
+            header: options.header,
             literate: isLiterate(filename)
         });
     } catch (e) {
@@ -82,7 +83,8 @@ function coffeeify(filename, options) {
 
     var compileOptions = {
         sourceMap: (options._flags && options._flags.debug),
-        bare: true
+        bare: true,
+        header: false
     };
 
     for (var i = 0, keys = Object.keys(compileOptions); i < keys.length; i++) {
