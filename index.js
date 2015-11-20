@@ -89,7 +89,12 @@ function coffeeify(filename, options) {
 
     for (var i = 0, keys = Object.keys(compileOptions); i < keys.length; i++) {
         var key = keys[i], option = options[key];
-        if (typeof option !== 'undefined' && option !== null) compileOptions[key] = !!option;
+        if (typeof option !== 'undefined' && option !== null) {
+            if (option === 'false' || option === 'no' || option === '0') {
+                option = false;
+            }
+            compileOptions[key] = !!option;
+        }
     }
 
     var chunks = [];
