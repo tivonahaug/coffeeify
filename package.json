@@ -1,6 +1,6 @@
 {
   "name": "coffeeify",
-  "version": "2.0.0-pre",
+  "version": "2.0.0",
   "description": "browserify plugin for coffee-script with support for mixed .js and .coffee files",
   "main": "index.js",
   "dependencies": {
