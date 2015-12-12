@@ -1,7 +1,7 @@
 ﻿var coffee = require('coffee-script');
 var convert = require('convert-source-map');
 var path = require('path');
-var through = require('through');
+var through = require('through2');
 
 var filePattern = /\.((lit)?coffee|coffee\.md)$/;
 
@@ -98,21 +98,21 @@ function coffeeify(filename, options) {
     }
 
     var chunks = [];
-    function write(chunk) {
+    function transform(chunk, encoding, callback) {
         chunks.push(chunk);
+        callback();
     }
 
-    function end() {
+    function flush(callback) {
         var stream = this;
         var source = Buffer.concat(chunks).toString();
         compile(filename, source, compileOptions, function(error, result) {
-            if (error) stream.emit('error', error);
-            stream.queue(result);
-            stream.queue(null);
+            if (!error) stream.push(result);
+            callback(error);
         });
     }
 
-    return through(write, end);
+    return through(transform, flush);
 }
 
 coffeeify.compile = compile;
