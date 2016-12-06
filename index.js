@@ -69,6 +69,7 @@ function compile(filename, source, options, callback) {
         var basename = path.basename(filename);
         map.setProperty('file', basename.replace(filePattern, '.js'));
         map.setProperty('sources', [basename]);
+        map.setProperty('sourcesContent', [source]);
         callback(null, compiled.js + '\n' + map.toComment() + '\n');
     } else {
         callback(null, compiled + '\n');
